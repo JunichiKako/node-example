@@ -11,6 +11,14 @@ app.listen(PORT, () => {
   console.log('サーバーが起動しました');
 });
 
+app.get('/users/:id', (req, res) => {
+  res.send(`User Id is ${req.params.id}.Name is ${req.query.name}.Age is ${req.query.age}`);
+});
+
+app.get('/test', (req, res) => {
+  res.send('Hello Test');
+});
+
 // import * as http from 'http'
 
 // const server = http.createServer((re4q,res) => {
