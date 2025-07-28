@@ -1,10 +1,20 @@
 import express from 'express';
 
 const app = express();
+app.use(express.json());
+app.use(express.static('public'));
 const PORT = 8888;
 
 app.get('/', (req, res) => {
-  res.send('Hello web server');
+  res.sendFile(__dirname + '/public/index.html');
+});
+
+app.put('/users/:id', (req, res) => {
+  res.send(req.body);
+});
+
+app.delete('/users/:id', (req, res) => {
+  res.send(req.params.id);
 });
 
 app.listen(PORT, () => {
@@ -12,7 +22,13 @@ app.listen(PORT, () => {
 });
 
 app.get('/users/:id', (req, res) => {
-  res.send(`User Id is ${req.params.id}.Name is ${req.query.name}.Age is ${req.query.age}`);
+  res.send(
+    `User Id is ${req.params.id}.Name is ${req.query.name}.Age is ${req.query.age}`
+  );
+});
+
+app.post('/', (req, res) => {
+  res.send(req.body);
 });
 
 app.get('/test', (req, res) => {
