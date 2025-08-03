@@ -1,6 +1,7 @@
 import express from 'express';
-import { AppDataSOurce } from './datasource';
+import { AppDataSource } from './datasource';
 import { error } from 'console';
+import { User } from './user.entity';
 
 const app = express();
 app.use(express.json());
@@ -19,13 +20,26 @@ app.delete('/users/:id', (req, res) => {
   res.send(req.params.id);
 });
 
+app.post('/users', async (req, res) => {
+  const { name, email } = req.body;
+  const user = new User();
+  user.name = name;
+  user.email = email;
+
+  const userRepository = AppDataSource.getRepository(User);
+  const newUser = await userRepository.save(user);
+  res.json(newUser);
+});
+
 app.listen(PORT, () => {
   console.log('サーバーが起動しました');
 });
 
-AppDataSOurce.initialize().then((res) => {
-  console.log('データベースに接続');
-}).catch((error) => console.log(error))
+AppDataSource.initialize()
+  .then(res => {
+    console.log('データベースに接続');
+  })
+  .catch(error => console.log(error));
 
 app.get('/users/:id', (req, res) => {
   res.send(
