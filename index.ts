@@ -1,4 +1,6 @@
 import express from 'express';
+import { AppDataSOurce } from './datasource';
+import { error } from 'console';
 
 const app = express();
 app.use(express.json());
@@ -20,6 +22,10 @@ app.delete('/users/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log('サーバーが起動しました');
 });
+
+AppDataSOurce.initialize().then((res) => {
+  console.log('データベースに接続');
+}).catch((error) => console.log(error))
 
 app.get('/users/:id', (req, res) => {
   res.send(
